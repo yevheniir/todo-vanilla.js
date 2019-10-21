@@ -7,15 +7,15 @@ const getListStorage = () => {
 
 	const listStorage = JSON.parse(localStorage.getItem('tasks'));
 
-	for (let task in listStorage) {
+	for (let task of listStorage) {
 		const item = document.createElement('li');
-		const classes = listStorage[task].done ? 'task done' : 'task';
-		const checked = listStorage[task].done ? 'checked' : '';
+		const classes = task.done ? 'task done' : 'task';
+		const checked = task.done ? 'checked' : '';
 
 		item.innerHTML = `
 			<div class="text-item">
 				<input type="checkbox" onclick="checkDone(this)" ${checked}>
-				<p class="${classes}" onclick="editTask(this)">${listStorage[task].value}</p>
+				<p class="${classes}" onclick="editTask(this)">${task.value}</p>
 			</div>
 			<div class="btn">
 				<button onclick="deleteItem(this)">Delete</button>
@@ -32,26 +32,26 @@ getListStorage();
 
 const setListStorage = () => {
 
-	const tasksObj = {};
+	const tasksProp = [];
 	const tasks = document.querySelectorAll('.task');
 
-	for (let i = 0; i < tasks.length; i++) {
+	for (let task of tasks) {
 
-		if (/done/.test(tasks[i].classList)) {
-			tasksObj[i] = {
-				value: tasks[i].innerHTML,
+		if (/done/.test(task.classList)) {
+			tasksProp.push({
+				value: task.innerHTML,
 				done: true,
-			};
+			});
 		} else {
-			tasksObj[i] = {
-				value: tasks[i].innerHTML,
+			tasksProp.push({
+				value: task.innerHTML,
 				done: false,
-			};
+			});
 		}
 		
 	}
 
-	localStorage.setItem('tasks', JSON.stringify(tasksObj));
+	localStorage.setItem('tasks', JSON.stringify(tasksProp));
 }
 
 /* Добавляем пункт в список */
